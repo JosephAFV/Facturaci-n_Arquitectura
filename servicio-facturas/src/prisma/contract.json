@@ -1,0 +1,271 @@
+{
+  "schemaVersion": "1",
+  "targetFamily": "mongo",
+  "target": "mongo",
+  "profileHash": "251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3",
+  "roots": {
+    "Factura": {
+      "model": "Factura",
+      "namespace": "__unbound__"
+    }
+  },
+  "domain": {
+    "namespaces": {
+      "__unbound__": {
+        "models": {
+          "Factura": {
+            "fields": {
+              "Codigo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/string@1",
+                  "kind": "scalar"
+                }
+              },
+              "cod_cliente": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/int32@1",
+                  "kind": "scalar"
+                }
+              },
+              "descuento": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/decimal128@1",
+                  "kind": "scalar"
+                }
+              },
+              "detalles_factura": {
+                "many": {
+                  "elementNullable": false
+                },
+                "nullable": false,
+                "type": {
+                  "entityKind": "valueObject",
+                  "entityName": "DetalleFactura",
+                  "kind": "valueObject",
+                  "namespaceId": "__unbound__",
+                  "plane": "storage"
+                }
+              },
+              "fecha": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/date@1",
+                  "kind": "scalar"
+                }
+              },
+              "iva": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/decimal128@1",
+                  "kind": "scalar"
+                }
+              },
+              "total": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/decimal128@1",
+                  "kind": "scalar"
+                }
+              },
+              "total_a_pagar": {
+                "nullable": false,
+                "type": {
+                  "codecId": "mongo/decimal128@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "collection": "Factura",
+              "fields": {
+                "Codigo": {
+                  "field": "Codigo"
+                },
+                "cod_cliente": {
+                  "field": "cod_cliente"
+                },
+                "descuento": {
+                  "field": "descuento"
+                },
+                "detalles_factura": {
+                  "field": "detalles_factura"
+                },
+                "fecha": {
+                  "field": "fecha"
+                },
+                "iva": {
+                  "field": "iva"
+                },
+                "total": {
+                  "field": "total"
+                },
+                "total_a_pagar": {
+                  "field": "total_a_pagar"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "storage": {
+    "namespaces": {
+      "__unbound__": {
+        "entries": {
+          "collection": {
+            "Factura": {
+              "indexes": [
+                {
+                  "keys": [
+                    {
+                      "direction": 1,
+                      "field": "Codigo"
+                    }
+                  ],
+                  "kind": "mongo-index",
+                  "name": "Codigo_1",
+                  "unique": true
+                }
+              ],
+              "kind": "mongo-collection",
+              "validator": {
+                "jsonSchema": {
+                  "additionalProperties": false,
+                  "bsonType": "object",
+                  "properties": {
+                    "Codigo": {
+                      "bsonType": "string"
+                    },
+                    "_id": {
+                      "bsonType": "objectId"
+                    },
+                    "cod_cliente": {
+                      "bsonType": "int"
+                    },
+                    "descuento": {
+                      "bsonType": "decimal"
+                    },
+                    "detalles_factura": {
+                      "bsonType": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "bsonType": "object",
+                        "properties": {
+                          "Subtotal": {
+                            "bsonType": "double"
+                          },
+                          "cantidad": {
+                            "bsonType": "int"
+                          },
+                          "cod_factura": {
+                            "bsonType": "int"
+                          },
+                          "cod_producto": {
+                            "bsonType": "int"
+                          },
+                          "codigo": {
+                            "bsonType": "int"
+                          }
+                        },
+                        "required": [
+                          "Subtotal",
+                          "cantidad",
+                          "cod_factura",
+                          "cod_producto",
+                          "codigo"
+                        ]
+                      }
+                    },
+                    "fecha": {
+                      "bsonType": "date"
+                    },
+                    "iva": {
+                      "bsonType": "decimal"
+                    },
+                    "total": {
+                      "bsonType": "decimal"
+                    },
+                    "total_a_pagar": {
+                      "bsonType": "decimal"
+                    }
+                  },
+                  "required": [
+                    "Codigo",
+                    "_id",
+                    "cod_cliente",
+                    "descuento",
+                    "detalles_factura",
+                    "fecha",
+                    "iva",
+                    "total",
+                    "total_a_pagar"
+                  ]
+                },
+                "kind": "mongo-validator",
+                "validationAction": "error",
+                "validationLevel": "strict"
+              }
+            }
+          },
+          "valueObject": {
+            "DetalleFactura": {
+              "fields": {
+                "Subtotal": {
+                  "nullable": false,
+                  "type": {
+                    "codecId": "mongo/double@1",
+                    "kind": "scalar"
+                  }
+                },
+                "cantidad": {
+                  "nullable": false,
+                  "type": {
+                    "codecId": "mongo/int32@1",
+                    "kind": "scalar"
+                  }
+                },
+                "cod_factura": {
+                  "nullable": false,
+                  "type": {
+                    "codecId": "mongo/int32@1",
+                    "kind": "scalar"
+                  }
+                },
+                "cod_producto": {
+                  "nullable": false,
+                  "type": {
+                    "codecId": "mongo/int32@1",
+                    "kind": "scalar"
+                  }
+                },
+                "codigo": {
+                  "nullable": false,
+                  "type": {
+                    "codecId": "mongo/int32@1",
+                    "kind": "scalar"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "id": "__unbound__",
+        "kind": "mongo-database"
+      }
+    },
+    "storageHash": "02f1a671c9067202c9b6781b2e8ac04acdc95249b32a917150d00392051b786b"
+  },
+  "capabilities": {},
+  "extensions": {},
+  "meta": {},
+  "_generated": {
+    "warning": "⚠️  GENERATED FILE - DO NOT EDIT",
+    "message": "This file is automatically generated by \"prisma contract emit\".",
+    "regenerate": "To regenerate, run: prisma contract emit"
+  }
+}

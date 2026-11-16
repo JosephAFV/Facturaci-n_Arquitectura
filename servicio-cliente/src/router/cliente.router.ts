@@ -2,6 +2,34 @@ import type {FastifyInstance} from "fastify";
 
 import { obtenerClienteId, obtenerClientes, crearCliente, actualizarCliente, eliminarCliente} from "../controllers/cliente.controller";
 
+const camposCliente = ["nombre", "direccion", "telefono"] as const;
+
+function leerCliente(body: unknown) {
+    const datos = body as Record<string, unknown> | undefined;
+    const cliente = datos && Object.hasOwn(datos, "cliente") ? datos.cliente : datos;
+    if (!cliente || typeof cliente !== "object" || Array.isArray(cliente)) {
+        return undefined;
+    }
+    return cliente as Record<string, unknown>;
+}
+
+function validarCliente(cliente: Record<string, unknown>, parcial: boolean) {
+    const campos = parcial ? camposCliente.filter(campo => Object.hasOwn(cliente, campo)) : camposCliente;
+    if (campos.length === 0) {
+        return "Envía al menos un campo de cliente";
+    }
+    for (const campo of campos) {
+        const valor = cliente[campo];
+        if (typeof valor !== "string" || valor.trim() === "") {
+            return parcial
+                ? `El campo ${campo} no puede estar vacío`
+                : "Nombre, dirección y teléfono son obligatorios";
+        }
+    }
+    if (campos.includes("telefono") && !/^[0-9]{10}$/.test(cliente.telefono as string)) {
+        return "El teléfono debe tener exactamente 10 dígitos";
+    }
+}
 
 export const clienteRouter = async (app: FastifyInstance) => {
     app.get("/clientes", obtenerClientes);
@@ -17,32 +45,14 @@ export const clienteRouter = async (app: FastifyInstance) => {
 
     app.post<{Body: Record<string, unknown>}>("/clientes", async (req, res) => {
         try{
-            const {body} = req;
-            const cliente = body && Object.hasOwn(body, "cliente") ? body.cliente : body;
-            if (!cliente || typeof cliente !== "object" || Array.isArray(cliente)) {
+            const cliente = leerCliente(req.body);
+            if (!cliente) {
                 return res.code(400).send({"mensaje": "Error al crear clientes"});
             }
 
-            const { nombre, direccion, telefono } = cliente as {
-                nombre?: unknown;
-                direccion?: unknown;
-                telefono?: unknown;
-            };
-
-            if(
-                typeof nombre !== "string" || nombre.trim() === "" ||
-                typeof direccion !== "string" || direccion.trim() === "" ||
-                typeof telefono !== "string" || telefono.trim() === ""
-            ){
-                return res.code(400).send({
-                    mensaje: "Nombre, dirección y teléfono son obligatorios",
-                });
-            }
-
-            if (!/^[0-9]{10}$/.test(telefono)) {
-                return res.code(400).send({
-                    mensaje: "El teléfono debe tener exactamente 10 dígitos",
-                });
+            const mensaje = validarCliente(cliente, false);
+            if (mensaje) {
+                return res.code(400).send({mensaje});
             }
 
             return await crearCliente(cliente);
@@ -54,7 +64,14 @@ export const clienteRouter = async (app: FastifyInstance) => {
 
     app.put<{Params: {id: string}}>("/clientes/:id", async (req, res) => {
         try{
-            const {cliente} = req.body as {cliente: Record<string, unknown>};
+            const cliente = leerCliente(req.body);
+            if (!cliente) {
+                return res.code(400).send({mensaje: "Error al actualizar clientes"});
+            }
+            const mensaje = validarCliente(cliente, true);
+            if (mensaje) {
+                return res.code(400).send({mensaje});
+            }
             return await actualizarCliente(Number(req.params.id), cliente);
         }catch(error){
             console.log("Error al actualizar cliente");
