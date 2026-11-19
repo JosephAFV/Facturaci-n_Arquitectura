@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-mongo/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'02f1a671c9067202c9b6781b2e8ac04acdc95249b32a917150d00392051b786b'>;
+  StorageHashBase<'fbd6e5428f68b79fb9254e9a821c1575519983e5acc2d585eef74b5590165efe'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'251b3ce23f6c9f561892e7c1af9d2cc941a13d64ba1aa7226b90036b09568cc3'>;
@@ -113,7 +113,7 @@ type ContractBase = Omit<
                     readonly Codigo: { readonly bsonType: 'string' };
                     readonly _id: { readonly bsonType: 'objectId' };
                     readonly cod_cliente: { readonly bsonType: 'int' };
-                    readonly descuento: { readonly bsonType: 'decimal' };
+                    readonly descuento: { readonly bsonType: 'double' };
                     readonly detalles_factura: {
                       readonly bsonType: 'array';
                       readonly items: {
@@ -136,9 +136,9 @@ type ContractBase = Omit<
                       };
                     };
                     readonly fecha: { readonly bsonType: 'date' };
-                    readonly iva: { readonly bsonType: 'decimal' };
-                    readonly total: { readonly bsonType: 'decimal' };
-                    readonly total_a_pagar: { readonly bsonType: 'decimal' };
+                    readonly iva: { readonly bsonType: 'double' };
+                    readonly total: { readonly bsonType: 'double' };
+                    readonly total_a_pagar: { readonly bsonType: 'double' };
                   };
                   readonly required: readonly [
                     'Codigo',
@@ -215,7 +215,7 @@ type ContractBase = Omit<
               };
               readonly descuento: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/decimal128@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/double@1' };
               };
               readonly detalles_factura: {
                 readonly nullable: false;
@@ -234,15 +234,15 @@ type ContractBase = Omit<
               };
               readonly iva: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/decimal128@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/double@1' };
               };
               readonly total: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/decimal128@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/double@1' };
               };
               readonly total_a_pagar: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/decimal128@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'mongo/double@1' };
               };
             };
             readonly relations: Record<string, never>;

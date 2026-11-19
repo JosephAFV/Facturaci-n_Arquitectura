@@ -1,15 +1,22 @@
 from sqlalchemy.orm import Session
-
 from models.producto import Producto
 from schemas.producto import ProductoCreate
-
 
 def obtener_producto(db: Session):
     return db.query(Producto).all()
 
 
 def obtener_producto_id(db: Session, codigo: int):
-    return db.get(Producto, codigo)
+    return db.query(Producto).filter(Producto.codigo == codigo).first()
+
+
+def eliminar_producto(db: Session, codigo: int):
+    producto = obtener_producto_id(db,codigo)
+    if not producto:
+        return None
+    db.delete(producto)
+    db.commit()
+    return producto
 
 
 def crear_producto(db: Session, datos: ProductoCreate):
@@ -24,20 +31,8 @@ def actualizar_producto(db: Session, codigo: int, datos: ProductoCreate):
     producto = obtener_producto_id(db, codigo)
     if producto is None:
         return None
-
     for campo, valor in datos.model_dump().items():
         setattr(producto, campo, valor)
-
     db.commit()
     db.refresh(producto)
-    return producto
-
-
-def eliminar_producto(db: Session, codigo: int):
-    producto = obtener_producto_id(db, codigo)
-    if producto is None:
-        return None
-
-    db.delete(producto)
-    db.commit()
     return producto

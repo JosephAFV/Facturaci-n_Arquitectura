@@ -32,7 +32,7 @@
               "descuento": {
                 "nullable": false,
                 "type": {
-                  "codecId": "mongo/decimal128@1",
+                  "codecId": "mongo/double@1",
                   "kind": "scalar"
                 }
               },
@@ -59,21 +59,21 @@
               "iva": {
                 "nullable": false,
                 "type": {
-                  "codecId": "mongo/decimal128@1",
+                  "codecId": "mongo/double@1",
                   "kind": "scalar"
                 }
               },
               "total": {
                 "nullable": false,
                 "type": {
-                  "codecId": "mongo/decimal128@1",
+                  "codecId": "mongo/double@1",
                   "kind": "scalar"
                 }
               },
               "total_a_pagar": {
                 "nullable": false,
                 "type": {
-                  "codecId": "mongo/decimal128@1",
+                  "codecId": "mongo/double@1",
                   "kind": "scalar"
                 }
               }
@@ -148,7 +148,7 @@
                       "bsonType": "int"
                     },
                     "descuento": {
-                      "bsonType": "decimal"
+                      "bsonType": "double"
                     },
                     "detalles_factura": {
                       "bsonType": "array",
@@ -185,13 +185,13 @@
                       "bsonType": "date"
                     },
                     "iva": {
-                      "bsonType": "decimal"
+                      "bsonType": "double"
                     },
                     "total": {
-                      "bsonType": "decimal"
+                      "bsonType": "double"
                     },
                     "total_a_pagar": {
-                      "bsonType": "decimal"
+                      "bsonType": "double"
                     }
                   },
                   "required": [
@@ -258,7 +258,7 @@
         "kind": "mongo-database"
       }
     },
-    "storageHash": "02f1a671c9067202c9b6781b2e8ac04acdc95249b32a917150d00392051b786b"
+    "storageHash": "fbd6e5428f68b79fb9254e9a821c1575519983e5acc2d585eef74b5590165efe"
   },
   "capabilities": {},
   "extensions": {},
