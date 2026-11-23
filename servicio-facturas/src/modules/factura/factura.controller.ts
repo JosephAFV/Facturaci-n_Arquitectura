@@ -3,12 +3,12 @@ import type { Factura } from '../../models/factura.model.js';
 import type { DetalleFactura } from '../../models/detalle-factura.models.js';
 import { FacturaService } from './factura.service.js';
 
-@Controller('factura')
+@Controller('facturas')
 export class FacturaController {
     constructor(private readonly facturaService: FacturaService) {}
 
     @Post()
-    crear(@Body() data: Factura) {
+    crear(@Body() data: any) {
         return this.facturaService.crear(data);
     }
 
