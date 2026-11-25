@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["productos"]
 )
 
-@router.get("/", response_model=list[ProductoResponse], include_in_schema=False)
+@router.get("", response_model=list[ProductoResponse], include_in_schema=False)
 @router.get("", response_model=list[ProductoResponse])
 def listar_productos(db: Session = Depends(obtener_db)):
     productos = producto_controller.obtener_producto(db)
@@ -23,7 +23,7 @@ def buscar_producto(codigo: int, db: Session = Depends(obtener_db)):
         raise HTTPException(status_code=404, detail="Producto no encontrado")
     return producto
 
-@router.post("/", response_model=ProductoResponse, include_in_schema=False)
+@router.post("", response_model=ProductoResponse, include_in_schema=False)
 @router.post("", response_model=ProductoResponse)
 def registrar_producto(producto: ProductoCreate, db: Session = Depends(obtener_db)):
     return producto_controller.crear_producto(db, producto)

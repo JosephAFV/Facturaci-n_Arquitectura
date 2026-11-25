@@ -7,6 +7,7 @@ from router.producto_router import router as producto_router
 app = FastAPI(
     title="Servicio Producto", version="1.0.0",
     description="Servicio desarrollado en Clases de Arquitectura de Software",
+    redirect_slashes=False
 )
 
 app.add_middleware(

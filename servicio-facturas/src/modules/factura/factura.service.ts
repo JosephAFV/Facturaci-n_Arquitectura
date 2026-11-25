@@ -3,9 +3,14 @@ import type { Factura } from '../../models/factura.model.js';
 import type { DetalleFactura } from '../../models/detalle-factura.models.js';
 import { db } from '../../prisma/db.js';
 import { ProductoClienteService } from '../../service/producto-cliente.service.js';
+import { ClienteClienteService } from '../../service/cliente-cliente.service.js';
+
 @Injectable()
 export class FacturaService {
-    constructor(private readonly productoCliente: ProductoClienteService) {}
+    constructor(
+        private readonly productoCliente: ProductoClienteService,
+        private readonly clienteCliente: ClienteClienteService,
+    ) { }
 
     private async detalleConSubtotal(data: Omit<DetalleFactura, 'Subtotal'>): Promise<DetalleFactura> {
         if (!Number.isInteger(data.cod_producto) || data.cod_producto <= 0) {
@@ -22,9 +27,10 @@ export class FacturaService {
         return { ...data, Subtotal: subtotal };
     }
 
-    async crear(data: Factura){
-        const factura = await db.orm.Factura.where({Codigo: data.codigo}).first();
-        if(factura){
+    async crear(data: Factura) {
+        await this.clienteCliente.validarExistencia(data.cod_cliente);
+        const factura = await db.orm.Factura.where({ Codigo: data.codigo }).first();
+        if (factura) {
             throw new ConflictException("Codigo ya existente");
         }
         const { codigo, fecha, ...datos } = data;
@@ -33,10 +39,10 @@ export class FacturaService {
             throw new BadRequestException('Fecha inválida');
         }
         const detalles = await Promise.all(datos.detalles_factura.map(d => this.detalleConSubtotal(d)));
-        return db.orm.Factura.create({...datos, Codigo: codigo, fecha: fechaFactura, detalles_factura: detalles});
+        return db.orm.Factura.create({ ...datos, Codigo: codigo, fecha: fechaFactura, detalles_factura: detalles });
     }
 
-    async listar(){
+    async listar() {
         return db.orm.Factura.all();
     }
 
@@ -50,7 +56,7 @@ export class FacturaService {
         return factura;
     }
 
-    async actualizar(codigo: string,data:Partial <Factura> ){
+    async actualizar(codigo: string, data: Partial<Factura>) {
         const { codigo: nuevoCodigo, fecha, ...datos } = data;
         const cambios = {
             ...datos,
@@ -65,9 +71,9 @@ export class FacturaService {
                 cambios.detalles_factura.map(d => this.detalleConSubtotal(d)),
             );
         }
-        const factura = await db.orm.Factura.where({Codigo: codigo}).update(cambios);
+        const factura = await db.orm.Factura.where({ Codigo: codigo }).update(cambios);
 
-        if(!factura){
+        if (!factura) {
             throw new NotFoundException("factura no encontrada");
 
         }
