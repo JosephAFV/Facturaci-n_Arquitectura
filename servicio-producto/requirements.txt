@@ -2,3 +2,4 @@ fastapi
 pydantic>=2,<3
 sqlalchemy>=2,<3
 uvicorn
+python-dotenv
